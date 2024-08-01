@@ -55,9 +55,9 @@ resource "azurerm_subnet" "subnet3" {
   address_prefixes     = ["10.0.3.0/24"]
 }
 
-resource "azurerm_app_service_plan" "example_plan" {
+resource "azurerm_app_service_plan" "app_plan" {
   provider            = azurerm.subscription1
-  name                = "example-appserviceplan"
+  name                = "appserviceplan"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   sku {
@@ -66,12 +66,12 @@ resource "azurerm_app_service_plan" "example_plan" {
   }
 }
 
-resource "azurerm_app_service" "example_app" {
+resource "azurerm_app_service" "appservice_app" {
   provider            = azurerm.subscription1
-  name                = "example-appservice"
+  name                = "appservice"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.example_plan.id
+  app_service_plan_id = azurerm_app_service_plan.app_plan.id
 
   site_config {
     always_on = true
@@ -82,7 +82,7 @@ resource "azurerm_app_service" "example_app" {
   }
 }
 
-resource "azurerm_sql_managed_instance" "example_sql_mi" {
+resource "azurerm_sql_managed_instance" "sql_mi" {
   provider                    = azurerm.subscription1
   name                        = "example-sqlmi"
   location                    = azurerm_resource_group.rg.location
@@ -97,31 +97,31 @@ resource "azurerm_sql_managed_instance" "example_sql_mi" {
 
 }
 
-resource "azurerm_private_endpoint" "example_pe_webapp" {
+resource "azurerm_private_endpoint" "pe_webapp" {
   provider            = azurerm.subscription1
-  name                = "example-pe-webapp"
+  name                = "pe-webapp"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id           = azurerm_subnet.subnet3.id
 
   private_service_connection {
-    name                           = "example-webapp-psc"
-    private_connection_resource_id = azurerm_app_service.example_app.id
+    name                           = "webapp-psc"
+    private_connection_resource_id = azurerm_app_service.appservice_app.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
   }
 }
 
-resource "azurerm_private_endpoint" "example_pe_sqlmi" {
+resource "azurerm_private_endpoint" "pe_sqlmi" {
   provider            = azurerm.subscription1
-  name                = "example-pe-sqlmi"
+  name                = "pe-sqlmi"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   subnet_id           = azurerm_subnet.subnet3.id
 
   private_service_connection {
-    name                           = "example-sqlmi-psc"
-    private_connection_resource_id = azurerm_sql_managed_instance.example_sql_mi.id
+    name                           = "sqlmi-psc"
+    private_connection_resource_id = azurerm_sql_managed_instance.sql_mi.id
     is_manual_connection           = false
     subresource_names              = ["sqlManagedInstance"]
   }
