@@ -1,12 +1,3 @@
-terraform {
-  backend "remote" {
-    organization = "new_yoshi"
-    workspaces {
-      name = "new1"
-    }
-  }
-}
-
 provider "azurerm" {
   features {}
 
