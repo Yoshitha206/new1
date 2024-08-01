@@ -1,8 +1,8 @@
 terraform {
   backend "remote" {
-    organization = "<your_organization_name>"
+    organization = "new_yoshi"
     workspaces {
-      name = "<your_workspace_name>"
+      name = "new1"
     }
   }
 }
