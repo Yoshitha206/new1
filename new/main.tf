@@ -1,3 +1,18 @@
+terraform {
+     required_providers {
+           azurerm  = {
+               source  = "harshicorp/azurerm"
+               version =  "=3.89.0"
+  }
+}
+cloud {
+  hostname = "app.terraform.io"
+ organization = "yoshi1"
+ workspaces {
+   name = "new1_workspace"
+  }
+ }
+}
 provider "azurerm" {
   features {}
 
